@@ -1,0 +1,10 @@
+﻿<Application x:Class="Left4DeadTrollControl.AppClient.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:Left4DeadTrollControl.AppClient"
+             xmlns:converters="clr-namespace:Left4DeadTrollControl.AppClient.Converters">
+    <Application.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:InverseBooleanConverter x:Key="InverseBooleanConverter"/>
+    </Application.Resources>
+</Application>

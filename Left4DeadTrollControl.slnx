@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/0 - Test/" />
+  <Folder Name="/1 - Core/">
+    <Project Path="Left4DeadTrollControl.Application/Left4DeadTrollControl.Application.csproj" Id="41dda258-0ace-485f-a901-34b197efa70c" />
+    <Project Path="Left4DeadTrollControl.Domain/Left4DeadTrollControl.Domain.csproj" Id="e88d0382-a3bb-4ff4-8843-240935219929" />
+  </Folder>
+  <Folder Name="/2 - Infrastructure/">
+    <Project Path="Left4DeadTrollControl.Infrastructure.IoC/Left4DeadTrollControl.Infrastructure.IoC.csproj" Id="f8e29952-8638-4773-96de-148878384e4b" />
+    <Project Path="Left4DeadTrollControl.Infrastructure.Persistence/Left4DeadTrollControl.Infrastructure.Persistence.csproj" Id="1d3978f1-98c2-41d3-98af-5e19a3c62616" />
+  </Folder>
+  <Folder Name="/3 - Presentation/">
+    <Project Path="Left4DeadTrollControl.AppClient/Left4DeadTrollControl.AppClient.csproj" />
+  </Folder>
+</Solution>

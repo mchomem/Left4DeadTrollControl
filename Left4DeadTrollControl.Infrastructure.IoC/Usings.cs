@@ -1,0 +1,11 @@
+﻿global using Left4DeadTrollControl.Application.Interfaces;
+global using Left4DeadTrollControl.Application.ProfileMappings;
+global using Left4DeadTrollControl.Application.Services;
+global using Left4DeadTrollControl.Domain.Interfaces;
+global using Left4DeadTrollControl.Infrastructure.Persistence.Contexts;
+global using Left4DeadTrollControl.Infrastructure.Persistence.Repositories;
+global using Mapster;
+global using MapsterMapper;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Configuration;
+global using Microsoft.Extensions.DependencyInjection;
