@@ -8,6 +8,7 @@ public static class DependencyInjection
         services.AddTransient<TrollRegistrationViewModel>();
         services.AddTransient<TrollListPageViewModel>();
         services.AddTransient<ScriptGenerationPageViewModel>();
+        services.AddTransient<SettingsPageViewModel>();
 
         return services;
     }

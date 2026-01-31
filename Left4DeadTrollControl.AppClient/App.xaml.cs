@@ -36,6 +36,7 @@ public partial class App : System.Windows.Application
         services.AddTransient<TrollRegistrationPage>();
         services.AddTransient<TrollListPage>();
         services.AddTransient<ScriptGenerationPage>();
+        services.AddTransient<SettingsPage>();
 
         _serviceProvider = services.BuildServiceProvider();
 

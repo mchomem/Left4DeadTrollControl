@@ -34,7 +34,7 @@ public partial class MainWindow : Window
 
     private void NavigateToSettings(object sender, RoutedEventArgs e)
     {
-        ContentArea.Content = new SettingsPage();
+        ContentArea.Content = App.GetService<SettingsPage>();
     }
 
     private void NavigateToAbout(object sender, RoutedEventArgs e)

@@ -171,6 +171,7 @@ d:DesignHeight="550" d:DesignWidth="560">
                         </Grid.ColumnDefinitions>
 
                         <TextBox x:Name="CfgDirectoryTextBox" 
+                                 Text="{Binding OutputDirectory, UpdateSourceTrigger=PropertyChanged}"
                                  Grid.Column="0"
                                  Style="{StaticResource ModernTextBoxStyle}"
                                  IsReadOnly="True"
@@ -198,7 +199,7 @@ d:DesignHeight="550" d:DesignWidth="560">
                             Margin="0,0,10,0"/>
                     <Button Content="Save" 
                             Style="{StaticResource PrimaryButtonStyle}"
-                            Click="SaveButton_Click"/>
+                            Command="{Binding SaveSettingsCommand}"/>
                 </StackPanel>
 
             </StackPanel>

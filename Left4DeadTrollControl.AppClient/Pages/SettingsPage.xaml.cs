@@ -2,10 +2,10 @@
 
 public partial class SettingsPage : UserControl
 {
-    public SettingsPage()
+    public SettingsPage(SettingsPageViewModel viewModel)
     {
         InitializeComponent();
-        LoadSettings();
+        DataContext = viewModel;
     }
 
     private void BrowseButton_Click(object sender, RoutedEventArgs e)
@@ -24,46 +24,8 @@ public partial class SettingsPage : UserControl
         }
     }
 
-    private void SaveButton_Click(object sender, RoutedEventArgs e)
-    {
-        if (string.IsNullOrWhiteSpace(CfgDirectoryTextBox.Text))
-        {
-            MessageBox.Show(
-                "Please select a directory before saving.",
-                "Validation",
-                MessageBoxButton.OK,
-                MessageBoxImage.Warning);
-            return;
-        }
-
-        if (!System.IO.Directory.Exists(CfgDirectoryTextBox.Text))
-        {
-            var result = MessageBox.Show(
-                "The specified directory does not exist. Do you want to save anyway?",
-                "Confirmation",
-                MessageBoxButton.YesNo,
-                MessageBoxImage.Question);
-
-            if (result == MessageBoxResult.No)
-            {
-                return;
-            }
-        }
-
-        MessageBox.Show(
-            "Settings saved successfully!\n\n(Persistence functionality will be implemented)",
-            "Success",
-            MessageBoxButton.OK,
-            MessageBoxImage.Information);
-    }
-
     private void ClearButton_Click(object sender, RoutedEventArgs e)
     {
         CfgDirectoryTextBox.Clear();
-    }
-
-    private void LoadSettings()
-    {
-        // Logic to load saved settings will be implemented here
     }
 }

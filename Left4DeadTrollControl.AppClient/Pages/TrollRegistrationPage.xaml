@@ -136,7 +136,7 @@
                                Margin="0,3,0,0"/>
                 </StackPanel>
 
-                <!-- URL do Perfil -->
+                <!-- Profile URL -->
                 <StackPanel Margin="0,0,0,20">
                     <TextBlock Text="Profile URL" Style="{StaticResource LabelStyle}"/>
                     <TextBox x:Name="ProfileUrlTextBox"
@@ -148,7 +148,7 @@
                                Margin="0,3,0,0"/>
                 </StackPanel>
 
-                <!-- Apelido -->
+                <!-- Nickname -->
                 <StackPanel Margin="0,0,0,20">
                     <TextBlock Text="Nickname" Style="{StaticResource LabelStyle}"/>
                     <TextBox x:Name="NicknameTextBox"
@@ -160,7 +160,7 @@
                                Margin="0,3,0,0"/>
                 </StackPanel>
 
-                <!-- Observacao -->
+                <!-- Notes -->
                 <StackPanel Margin="0,0,0,30">
                     <TextBlock Text="Notes" Style="{StaticResource LabelStyle}"/>
                     <TextBox x:Name="NotesTextBox"
