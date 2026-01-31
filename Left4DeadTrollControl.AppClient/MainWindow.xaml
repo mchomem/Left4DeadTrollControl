@@ -132,34 +132,58 @@
                 <!-- Navigation Menu -->
                 <StackPanel Grid.Row="1" Margin="0,20,0,0">
                     <Button x:Name="HomeButton" 
-                            Content="Home" 
                             Style="{StaticResource MenuButtonStyle}"
-                            Click="NavigateToHome"/>
+                            Click="NavigateToHome">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🏠" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Home"/>
+                        </StackPanel>
+                    </Button>
                     
                     <Button x:Name="RegistrationButton" 
-                            Content="Troll Registration" 
                             Style="{StaticResource MenuButtonStyle}"
-                            Click="NavigateToRegistration"/>
+                            Click="NavigateToRegistration">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📝" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Troll Registration"/>
+                        </StackPanel>
+                    </Button>
                     
                     <Button x:Name="ListButton" 
-                            Content="List" 
                             Style="{StaticResource MenuButtonStyle}"
-                            Click="NavigateTolisting"/>
+                            Click="NavigateTolisting">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📋" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="List"/>
+                        </StackPanel>
+                    </Button>
                     
                     <Button x:Name="ScriptGenerationButton" 
-                            Content="Script Generation" 
                             Style="{StaticResource MenuButtonStyle}"
-                            Click="NavigateToProgress"/>
+                            Click="NavigateToProgress">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="⚙️" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Script Generation"/>
+                        </StackPanel>
+                    </Button>
                     
                     <Button x:Name="SettingsButton" 
-                            Content="Settings" 
                             Style="{StaticResource MenuButtonStyle}"
-                            Click="NavigateToSettings"/>
+                            Click="NavigateToSettings">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="🔧" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Settings"/>
+                        </StackPanel>
+                    </Button>
                     
                     <Button x:Name="AboutButton" 
-                            Content="About" 
                             Style="{StaticResource MenuButtonStyle}"
-                            Click="NavigateToAbout"/>
+                            Click="NavigateToAbout">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="ℹ️" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="About"/>
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
             </Grid>
         </Border>
