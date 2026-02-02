@@ -103,6 +103,14 @@ public class ScriptGenerationPageViewModel : INotifyPropertyChanged
 
             var result = await _trollPlayerService.GetAllAsync(new TrollPlayerFilter());
 
+            if(!result.Any())
+            {
+                MessageBox.Show($"No valid players found.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                StatusText = "No valid players found.";
+                ProgressValue = 0;
+                return;
+            }
+
             // Passo 2: Validando
             StatusText = steps[1];
             await UpdateProgress(20, 40);
@@ -127,6 +135,11 @@ public class ScriptGenerationPageViewModel : INotifyPropertyChanged
                 if (!string.IsNullOrEmpty(item.Nickname))
                 {
                     contentScriptFile.Append($" - Nickname: {item.Nickname}");
+                }
+
+                if (!string.IsNullOrEmpty(item.Notes))
+                {
+                    contentScriptFile.Append($" - Notes: {item.Notes}");
                 }
 
                 contentScriptFile.AppendLine();
