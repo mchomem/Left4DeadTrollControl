@@ -16,6 +16,7 @@ public partial class TrollRegistrationPage : UserControl
 
     private static bool IsTextNumeric(string text)
     {
-        return Regex.IsMatch(text, "^[0-9]+$");
+        var result = Regex.IsMatch(text, "^[0-9]+$");
+        return result;
     }
 }

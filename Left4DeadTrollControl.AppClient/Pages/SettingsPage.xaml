@@ -10,7 +10,7 @@ d:DesignHeight="550" d:DesignWidth="560">
     <UserControl.Resources>
         <!-- TextBox Style -->
         <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Padding" Value="3"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>

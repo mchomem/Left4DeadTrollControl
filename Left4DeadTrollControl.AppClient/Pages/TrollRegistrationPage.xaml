@@ -6,11 +6,11 @@
              xmlns:local="clr-namespace:Left4DeadTrollControl.AppClient.Pages"
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="560">
-    
+
     <UserControl.Resources>
         <!-- TextBox Style -->
         <Style x:Key="ModernTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Padding" Value="3"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -118,14 +118,14 @@
         <!-- Form -->
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="30,20">
-                
+
                 <!-- SteamId -->
                 <StackPanel Margin="0,0,0,20">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="SteamId" Style="{StaticResource LabelStyle}"/>
                         <TextBlock Text="*" Foreground="Red" FontSize="13" Margin="3,0,0,5"/>
                     </StackPanel>
-                    <TextBox x:Name="SteamIdTextBox" 
+                    <TextBox x:Name="SteamIdTextBox"
                              Text="{Binding SteamId, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource ModernTextBoxStyle}"
                              MaxLength="8"

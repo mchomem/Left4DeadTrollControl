@@ -2,7 +2,8 @@
 
 public partial class TrollListPage : UserControl
 {
-    private const string PlaceholderText = "Search by SteamId, Nickname...";
+    private const string SteamIdPlaceholder = "Search by Steam ID...";
+    private const string NicknamePlaceholder = "Search by Nickname...";
 
     public TrollListPage(TrollListPageViewModel viewModel)
     {
@@ -12,7 +13,7 @@ public partial class TrollListPage : UserControl
 
     private void SearchTextBox_GotFocus(object sender, System.Windows.RoutedEventArgs e)
     {
-        if (SearchTextBox.Text == PlaceholderText)
+        if (SearchTextBox.Text == SteamIdPlaceholder)
         {
             SearchTextBox.Text = "";
             SearchTextBox.Foreground = new SolidColorBrush(Color.FromRgb(51, 51, 51));
@@ -23,8 +24,26 @@ public partial class TrollListPage : UserControl
     {
         if (string.IsNullOrWhiteSpace(SearchTextBox.Text))
         {
-            SearchTextBox.Text = PlaceholderText;
+            SearchTextBox.Text = SteamIdPlaceholder;
             SearchTextBox.Foreground = new SolidColorBrush(Color.FromRgb(153, 153, 153));
+        }
+    }
+
+    private void NicknameTextBox_GotFocus(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if (NicknameTextBox.Text == NicknamePlaceholder)
+        {
+            NicknameTextBox.Text = "";
+            NicknameTextBox.Foreground = new SolidColorBrush(Color.FromRgb(51, 51, 51));
+        }
+    }
+
+    private void NicknameTextBox_LostFocus(object sender, System.Windows.RoutedEventArgs e)
+    {
+        if (string.IsNullOrWhiteSpace(NicknameTextBox.Text))
+        {
+            NicknameTextBox.Text = NicknamePlaceholder;
+            NicknameTextBox.Foreground = new SolidColorBrush(Color.FromRgb(153, 153, 153));
         }
     }
 }

@@ -9,6 +9,7 @@ public class TrollListPageViewModel : INotifyPropertyChanged
         _trollPlayerService = trollPlayerService;
         ListCommand = new RelayCommand(async () => await ListAsync());
         DeleteCommand = new RelayCommand<Guid>(async (id) => await DeleteAsync(id));
+        ClearCommand = new RelayCommand(async () => await ClearFiltersAsync());
         
         // Load data on initialization
         _ = ListAsync();
@@ -30,12 +31,23 @@ public class TrollListPageViewModel : INotifyPropertyChanged
     }
 
     private string _searchText = string.Empty;
-    public string SearchText
+    public string? SearchText
     {
         get => _searchText;
         set
         {
-            _searchText = value;
+            _searchText = value!;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _nicknameSearchText = string.Empty;
+    public string? NicknameSearchText
+    {
+        get => _nicknameSearchText;
+        set
+        {
+            _nicknameSearchText = value!;
             OnPropertyChanged();
         }
     }
@@ -49,6 +61,7 @@ public class TrollListPageViewModel : INotifyPropertyChanged
 
     public ICommand ListCommand { get; }
     public ICommand DeleteCommand { get; }
+    public ICommand ClearCommand { get; }
 
     private async Task ListAsync()
     {
@@ -56,7 +69,8 @@ public class TrollListPageViewModel : INotifyPropertyChanged
         {
             var filter = new TrollPlayerFilter
             {
-                SteamId = SearchText
+                SteamId = SearchText,
+                Nickname = NicknameSearchText
             };
 
             var result = await _trollPlayerService.GetAllAsync(filter);
@@ -94,6 +108,13 @@ public class TrollListPageViewModel : INotifyPropertyChanged
             MessageBox.Show($"Error deleting: {ex.Message}", "Error",
                 MessageBoxButton.OK, MessageBoxImage.Error);
         }
+    }
+
+    private async Task ClearFiltersAsync()
+    {
+        SearchText = string.Empty;
+        NicknameSearchText = string.Empty;
+        await ListAsync();
     }
 
     #endregion

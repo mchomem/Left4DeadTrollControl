@@ -4,6 +4,7 @@ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 xmlns:local="clr-namespace:Left4DeadTrollControl.AppClient.Pages"
+xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
 mc:Ignorable="d" 
 d:DesignHeight="550" d:DesignWidth="560">
 
@@ -49,7 +50,7 @@ d:DesignHeight="550" d:DesignWidth="560">
 
         <!-- Search TextBox Style -->
         <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
-            <Setter Property="Padding" Value="10,8"/>
+            <Setter Property="Padding" Value="3"/>
             <Setter Property="FontSize" Value="13"/>
             <Setter Property="BorderBrush" Value="#CCCCCC"/>
             <Setter Property="BorderThickness" Value="1"/>
@@ -161,35 +162,89 @@ d:DesignHeight="550" d:DesignWidth="560">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Search Field -->
-                <TextBox x:Name="SearchTextBox" 
-                         Grid.Column="0"
-                         Style="{StaticResource SearchTextBoxStyle}"
-                         Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
-                         GotFocus="SearchTextBox_GotFocus"
-                         LostFocus="SearchTextBox_LostFocus"
-                         Margin="0,0,10,0"/>
+                <!-- Steam ID Field with Label -->
+                <Grid Grid.Column="0" Margin="0,0,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" 
+                               Text="Steam ID"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="#333333"
+                               Margin="0,0,0,5"/>
+                    
+                    <TextBox x:Name="SearchTextBox" 
+                             Grid.Row="1"
+                             Style="{StaticResource SearchTextBoxStyle}"
+                             Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             GotFocus="SearchTextBox_GotFocus"
+                             LostFocus="SearchTextBox_LostFocus"/>
+                    
+                    <!-- Info -->
+                    <TextBlock Grid.Row="2"
+                               FontSize="12"
+                               Foreground="#666666"
+                               Margin="0,5,0,0">
+                        <Run Text="Total: "/>
+                        <Run Text="{Binding TotalRecords, Mode=OneWay}" FontWeight="SemiBold"/>
+                        <Run Text=" records"/>
+                    </TextBlock>
+                </Grid>
 
-                <!-- Search Button -->
-                <Button Grid.Column="1"
-                        Content="Search"
-                        Style="{StaticResource ActionButtonStyle}"
-                        Command="{Binding ListCommand}"
-                        Margin="0,0,10,0"/>
+                <!-- Nickname Field with Label -->
+                <Grid Grid.Column="1" Margin="0,0,10,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <TextBlock Grid.Row="0" 
+                               Text="Nickname"
+                               FontSize="12"
+                               FontWeight="SemiBold"
+                               Foreground="#333333"
+                               Margin="0,0,0,5"/>
+                    
+                    <TextBox x:Name="NicknameTextBox" 
+                             Grid.Row="1"
+                             Style="{StaticResource SearchTextBoxStyle}"
+                             Text="{Binding NicknameSearchText, UpdateSourceTrigger=PropertyChanged}"
+                             GotFocus="NicknameTextBox_GotFocus"
+                             LostFocus="NicknameTextBox_LostFocus"/>
+                </Grid>
 
-                <!-- Info -->
-                <TextBlock Grid.Column="2" 
-                           VerticalAlignment="Center"
-                           FontSize="13"
-                           Foreground="#666666">
-                    <Run Text="Total: "/>
-                    <Run Text="{Binding TotalRecords, Mode=OneWay}"/>
-                    <Run Text=" records"/>
-                </TextBlock>
+                <!-- Action Buttons -->
+                <StackPanel Grid.Column="2" 
+                            Orientation="Horizontal" 
+                            VerticalAlignment="Center">
+                    <Button Content="Search"
+                            Style="{StaticResource ActionButtonStyle}"
+                            Command="{Binding ListCommand}"
+                            Margin="0,0,5,0"/>
+                    
+                    <Button Content="Clear"
+                            Command="{Binding ClearCommand}"
+                            Margin="0">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
+                                <Setter Property="Background" Value="#757575"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#616161"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </StackPanel>
             </Grid>
         </Border>
 
@@ -274,15 +329,29 @@ d:DesignHeight="550" d:DesignWidth="560">
 
                     <!-- Actions Column -->
                     <DataGridTemplateColumn Header="Actions" Width="140">
+                        <DataGridTemplateColumn.HeaderStyle>
+                            <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource DataGridHeaderStyle}">
+                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            </Style>
+                        </DataGridTemplateColumn.HeaderStyle>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button Content="Delete"
+                                <Button 
                                         Style="{StaticResource DeleteButtonStyle}"
                                         Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                         CommandParameter="{Binding Id}"
                                         Margin="0"
                                         Padding="12,8"
-                                        HorizontalAlignment="Left"/>
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        ToolTip="Delete">
+                                    <StackPanel Orientation="Horizontal">
+                                        <fa:IconImage Icon="Trash"
+                                                      Foreground="White"
+                                                      Width="16"
+                                                      Height="16"/>
+                                    </StackPanel>
+                                </Button>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
