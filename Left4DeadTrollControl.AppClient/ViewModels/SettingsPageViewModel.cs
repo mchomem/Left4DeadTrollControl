@@ -1,20 +1,14 @@
-﻿using System.Text.Json;
-
-namespace Left4DeadTrollControl.AppClient.ViewModels;
+﻿namespace Left4DeadTrollControl.AppClient.ViewModels;
 
 public class SettingsPageViewModel : INotifyPropertyChanged
 {
     private readonly string _appSettingsPath;
-    private readonly IConfiguration _configuration;
     private string _outputDirectory = string.Empty;
 
-    public SettingsPageViewModel(IConfiguration configuration)
+    public SettingsPageViewModel()
     {
         _appSettingsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "appsettings.json");
-        _configuration = configuration;
-
         SaveSettingsCommand = new RelayCommand(async () => await SaveSettingsAsync(), CanSave);
-        
         _ = LoadSettingsAsync();
     }
 
@@ -49,19 +43,10 @@ public class SettingsPageViewModel : INotifyPropertyChanged
             }
 
             var jsonContent = await File.ReadAllTextAsync(_appSettingsPath);
+            var optionsRead = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            SettingsDataWrapper settings = JsonSerializer.Deserialize<SettingsDataWrapper>(jsonContent, optionsRead)!;
 
-            using (JsonDocument document = JsonDocument.Parse(jsonContent))
-            {
-                var root = document.RootElement;
-
-                if (root.TryGetProperty("ScriptGeneration", out JsonElement scriptGeneration))
-                {
-                    if (scriptGeneration.TryGetProperty("OutputDirectory", out JsonElement outputDirectory))
-                    {
-                        OutputDirectory = outputDirectory.GetString() ?? string.Empty;
-                    }
-                }
-            }
+            OutputDirectory = settings.ScriptGeneration.OutputDirectory;
         }
         catch (Exception ex)
         {
@@ -74,28 +59,18 @@ public class SettingsPageViewModel : INotifyPropertyChanged
         try
         {
             var jsonContent = await File.ReadAllTextAsync(_appSettingsPath);
+            var optionsRead = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            SettingsDataWrapper settings = JsonSerializer.Deserialize<SettingsDataWrapper>(jsonContent, optionsRead)!;
+            settings.ScriptGeneration.OutputDirectory = OutputDirectory;
 
-            using (JsonDocument document = JsonDocument.Parse(jsonContent))
-            {
-                var root = document.RootElement.Clone();
-                var jsonObject = JsonSerializer.Deserialize<Dictionary<string, JsonElement>>(root);
-
-                var updatedScriptGenerationConnection = new Dictionary<string, object>
-                {
-                    { "OutputDirectory", OutputDirectory },
-                };
-
-                jsonObject["ScriptGeneration"] = JsonDocument.Parse(JsonSerializer.Serialize(updatedScriptGenerationConnection)).RootElement;
-
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                string updatedJson = JsonSerializer.Serialize(jsonObject, options);
-                await File.WriteAllTextAsync(_appSettingsPath, updatedJson);
-            }
+            var optionWrite = new JsonSerializerOptions { WriteIndented = true };
+            var jsonString = JsonSerializer.Serialize(settings, optionWrite);
+            await File.WriteAllTextAsync(_appSettingsPath, jsonString);
 
             MessageBox.Show("Saved successfully", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
-        {   
+        {
             MessageBox.Show($"Error to save settings: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
@@ -112,4 +87,14 @@ public class SettingsPageViewModel : INotifyPropertyChanged
     }
 
     #endregion
+}
+
+public class SettingsDataWrapper
+{
+    public ScriptGeneration ScriptGeneration { get; set; } = new();
+}
+
+public class ScriptGeneration
+{
+    public string OutputDirectory { get; set; } = string.Empty;
 }
