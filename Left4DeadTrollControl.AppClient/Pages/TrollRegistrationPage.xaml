@@ -116,78 +116,97 @@
         </Border>
 
         <!-- Form -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-            <StackPanel Margin="30,20">
+        <StackPanel Grid.Row="1" Margin="30,20">
 
-                <!-- SteamId -->
-                <StackPanel Margin="0,0,0,20">
+            <!-- Steam ID and Nickname (side by side) -->
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Steam ID -->
+                <StackPanel Grid.Column="0">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="SteamId" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text="Steam ID" Style="{StaticResource LabelStyle}"/>
                         <TextBlock Text="*" Foreground="Red" FontSize="13" Margin="3,0,0,5"/>
+                        <TextBlock Text=" - Numbers only (up to 8 digits)"
+                               FontSize="11"
+                               Foreground="#999999"
+                               Margin="0,3,0,0"/>
                     </StackPanel>
                     <TextBox x:Name="SteamIdTextBox"
                              Text="{Binding SteamId, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource ModernTextBoxStyle}"
                              MaxLength="8"
                              PreviewTextInput="SteamIdTextBox_PreviewTextInput"/>
-                    <TextBlock Text="Required field - Numbers only (up to 8 digits)"
-                               FontSize="11"
-                               Foreground="#999999"
-                               Margin="0,3,0,0"/>
-                </StackPanel>
 
-                <!-- Profile URL -->
-                <StackPanel Margin="0,0,0,20">
-                    <TextBlock Text="Profile URL" Style="{StaticResource LabelStyle}"/>
-                    <TextBox x:Name="ProfileUrlTextBox"
-                             Text="{Binding ProfileUrl, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource ModernTextBoxStyle}"/>
-                    <TextBlock Text="Full Steam profile URL"
-                               FontSize="11"
-                               Foreground="#999999"
-                               Margin="0,3,0,0"/>
                 </StackPanel>
 
                 <!-- Nickname -->
-                <StackPanel Margin="0,0,0,20">
-                    <TextBlock Text="Nickname" Style="{StaticResource LabelStyle}"/>
+                <StackPanel Grid.Column="2">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Nickname" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text=" - Custom identification"
+                            FontSize="11"
+                            Foreground="#999999"
+                            Margin="0,3,0,0"/>
+                    </StackPanel>
                     <TextBox x:Name="NicknameTextBox"
                              Text="{Binding Nickname, UpdateSourceTrigger=PropertyChanged}"
-                             Style="{StaticResource ModernTextBoxStyle}"/>
-                    <TextBlock Text="Custom identification"
-                               FontSize="11"
-                               Foreground="#999999"
-                               Margin="0,3,0,0"/>
-                </StackPanel>
-
-                <!-- Notes -->
-                <StackPanel Margin="0,0,0,30">
-                    <TextBlock Text="Notes" Style="{StaticResource LabelStyle}"/>
-                    <TextBox x:Name="NotesTextBox"
-                             Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
                              Style="{StaticResource ModernTextBoxStyle}"
-                             TextWrapping="Wrap"
-                             AcceptsReturn="True"
-                             Height="100"
-                             VerticalScrollBarVisibility="Auto"/>
-                    <TextBlock Text="Additional notes about the troll"
-                               FontSize="11"
-                               Foreground="#999999"
-                               Margin="0,3,0,0"/>
+                             MaxLength="100" />
                 </StackPanel>
+            </Grid>
 
-                <!-- Action Buttons -->
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Clear" 
-                            Style="{StaticResource SecondaryButtonStyle}"
-                            Command="{Binding ClearCommand}"
-                            Margin="0,0,10,0"/>
-                    <Button Content="Save" 
-                            Style="{StaticResource PrimaryButtonStyle}"
-                            Command="{Binding SaveCommand}"/>
+            <!-- Profile URL -->
+            <StackPanel Margin="0,0,0,20">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Profile URL" Style="{StaticResource LabelStyle}"/>
+                    <TextBlock Text=" - Full Steam profile URL"
+                            FontSize="11"
+                            Foreground="#999999"
+                            Margin="0,3,0,0"/>
                 </StackPanel>
-
+                <TextBox x:Name="ProfileUrlTextBox"
+                         Text="{Binding ProfileUrl, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource ModernTextBoxStyle}"
+                         MaxLength="300" />
             </StackPanel>
-        </ScrollViewer>
+
+            <!-- Notes -->
+            <StackPanel Margin="0,0,0,30">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Notes" Style="{StaticResource LabelStyle}"/>
+                    <TextBlock Text=" - Additional notes about the troll"
+                           FontSize="11"
+                           Foreground="#999999"
+                           Margin="0,3,0,0"/>
+                </StackPanel>
+                <TextBox x:Name="NotesTextBox"
+                         Text="{Binding Notes, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource ModernTextBoxStyle}"
+                         TextWrapping="Wrap"
+                         AcceptsReturn="True"
+                         Height="100"
+                         MaxLength="2000"
+                         VerticalScrollBarVisibility="Auto"/>
+                <TextBlock Text="{Binding CountCharactersTextNotes, StringFormat='{}{0}/2000'}"
+                           FontSize="11"/>
+            </StackPanel>
+
+            <!-- Action Buttons -->
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="Clear" 
+                        Style="{StaticResource SecondaryButtonStyle}"
+                        Command="{Binding ClearCommand}"
+                        Margin="0,0,10,0"/>
+                <Button Content="Save" 
+                        Style="{StaticResource PrimaryButtonStyle}"
+                        Command="{Binding SaveCommand}"/>
+            </StackPanel>
+
+        </StackPanel>
     </Grid>
 </UserControl>

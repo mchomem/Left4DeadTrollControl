@@ -55,6 +55,18 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
         {
             _notes = value;
             OnPropertyChanged();
+            CountCharactersTextNotes = value?.Length ?? 0;
+        }
+    }
+
+    private int _countCharactersTextNotes;
+    public int CountCharactersTextNotes
+    {
+        get => _countCharactersTextNotes;
+        set
+        {
+            _countCharactersTextNotes = value;
+            OnPropertyChanged();
         }
     }
 
@@ -98,6 +110,7 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
         ProfileUrl = string.Empty;
         Nickname = string.Empty;
         Notes = string.Empty;
+        CountCharactersTextNotes = 0;
     }
 
     #endregion
