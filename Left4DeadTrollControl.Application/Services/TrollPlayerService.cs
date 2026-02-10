@@ -31,7 +31,7 @@ public class TrollPlayerService : ITrollPlayerService
         if (trollPlayer is null)
             throw new Exception("Troll player not found.");
 
-        var deletedCustomer = await _trollPlayerRepository.DleteAsync(trollPlayer);
+        var deletedCustomer = await _trollPlayerRepository.DeleteAsync(trollPlayer);
 
         return _mapper.Map<TrollPlayerDto>(deletedCustomer);
     }
@@ -49,7 +49,7 @@ public class TrollPlayerService : ITrollPlayerService
 
     public async Task<TrollPlayerDto> GetAsync(Guid id)
     {
-        var user = await _trollPlayerRepository.GetAsync(x => x.Id == id);
+        var user = await _trollPlayerRepository.GetAsync(id);
 
         if (user is null)
             throw new Exception("Troll player not found.");

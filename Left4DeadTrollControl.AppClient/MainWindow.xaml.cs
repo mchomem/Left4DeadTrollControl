@@ -41,4 +41,17 @@ public partial class MainWindow : Window
     {
         ContentArea.Content = new AboutPage();
     }
+
+    public async void NavigateToRegistrationWithId(Guid id)
+    {
+        var registrationPage = App.GetService<TrollRegistrationPage>();
+        var viewModel = registrationPage.DataContext as TrollRegistrationViewModel;
+        
+        if (viewModel != null)
+        {
+            await viewModel.LoadTrollForEdit(id);
+        }
+        
+        ContentArea.Content = registrationPage;
+    }
 }

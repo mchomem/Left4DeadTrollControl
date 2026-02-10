@@ -33,20 +33,18 @@ public partial class App : System.Windows.Application
 
         // 3. Register Windows/Pages if needed
         services.AddSingleton<MainWindow>();
-        services.AddTransient<TrollRegistrationPage>();
-        services.AddTransient<TrollListPage>();
-        services.AddTransient<ScriptGenerationPage>();
-        services.AddTransient<SettingsPage>();
+        services.AddScoped<TrollRegistrationPage>();
+        services.AddScoped<TrollListPage>();
+        services.AddScoped<ScriptGenerationPage>();
+        services.AddScoped<SettingsPage>();
 
         _serviceProvider = services.BuildServiceProvider();
 
         try
         {
-            using (var scope = _serviceProvider.CreateScope())
-            {
-                var dbContext = scope.ServiceProvider.GetRequiredService<Left4DeadTrollControlContext>();
-                dbContext.Database.Migrate();
-            }
+            using var scope = _serviceProvider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<Left4DeadTrollControlContext>();
+            dbContext.Database.Migrate();
         }
         catch (Exception ex)
         {
@@ -68,6 +66,12 @@ public partial class App : System.Windows.Application
 
     public static T GetService<T>() where T : class
     {
-        return ((App)Current)._serviceProvider.GetRequiredService<T>();
+        var scope = ((App)Current)._serviceProvider.CreateScope();
+        return scope.ServiceProvider.GetRequiredService<T>();
+    }
+
+    public static IServiceScope CreateScope()
+    {
+        return ((App)Current)._serviceProvider.CreateScope();
     }
 }

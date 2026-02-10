@@ -76,7 +76,12 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
 
     public async Task<TEntity> GetAsync(Guid id)
     {
-        var entity = await _dbSet.FindAsync(id);
+        var idString = id.ToString();
+
+        var entity = await _dbSet
+            .Where(e => EF.Property<string>(e, "Id") == idString)
+            .FirstOrDefaultAsync();
+
         return entity!;
     }
 

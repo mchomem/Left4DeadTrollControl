@@ -1,8 +1,12 @@
-﻿namespace Left4DeadTrollControl.AppClient.ViewModels;
+﻿using static System.Formats.Asn1.AsnWriter;
+
+namespace Left4DeadTrollControl.AppClient.ViewModels;
 
 public class TrollRegistrationViewModel : INotifyPropertyChanged
 {
     private readonly ITrollPlayerService _trollPlayerService;
+    private Guid? _currentTrollId;
+    private DateTime _createdAt;
 
     public TrollRegistrationViewModel(ITrollPlayerService trollPlayerService)
     {
@@ -12,6 +16,20 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
     }
 
     #region Properties
+
+    private bool _isEditMode;
+    public bool IsEditMode
+    {
+        get => _isEditMode;
+        set
+        {
+            _isEditMode = value;
+            OnPropertyChanged();
+            OnPropertyChanged(nameof(PageTitle));
+        }
+    }
+
+    public string PageTitle => IsEditMode ? "Edit Troll" : "Troll Registration";
 
     private string _steamId;
     public string SteamId
@@ -79,33 +97,81 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
 
     private bool CanSave() => !string.IsNullOrWhiteSpace(SteamId);
 
+    public async Task LoadTrollForEdit(Guid trollId)
+    {
+        try
+        {
+            var troll = await _trollPlayerService.GetAsync(trollId);
+
+            if (troll != null)
+            {
+                _currentTrollId = trollId;
+                _createdAt = troll.CreatedAt;
+                IsEditMode = true;
+                SteamId = troll.SteamId;
+                ProfileUrl = troll.ProfileUrl;
+                Nickname = troll.Nickname;
+                Notes = troll.Notes;
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading troll data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
     private async Task SaveAsync()
     {
         try
         {
-            var trollPlayerDto = new TrollPlayerInsertDto
+            if (IsEditMode && _currentTrollId.HasValue)
             {
-                SteamId = SteamId,
-                ProfileUrl = ProfileUrl,
-                Nickname = Nickname,
-                Notes = Notes
-            };
+                var updatedTrollPlayer = new TrollPlayerUpdateDto
+                {
+                    Id = _currentTrollId.Value,
+                    SteamId = SteamId,
+                    ProfileUrl = ProfileUrl,
+                    Nickname = Nickname,
+                    Notes = Notes
+                };                
 
-            await _trollPlayerService.CreateAsync(trollPlayerDto);
+                // IMPORTANTE: Criar um novo scope para garantir DbContext limpo
+                using (var scope = App.CreateScope())
+                {
+                    var service = scope.ServiceProvider.GetRequiredService<ITrollPlayerService>();
+                    await service.UpdateAsync(_currentTrollId.Value, updatedTrollPlayer);
+                }
 
-            MessageBox.Show("Troll registered successfully!", "Success",
-                MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Troll updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                // Create a new record.
+                var newTrollPlayer = new TrollPlayerInsertDto
+                {
+                    SteamId = SteamId,
+                    ProfileUrl = ProfileUrl,
+                    Nickname = Nickname,
+                    Notes = Notes
+                };
+
+                await _trollPlayerService.CreateAsync(newTrollPlayer);
+
+                MessageBox.Show("Troll registered successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+
             Clear();
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"Error registering: {ex.Message}", "Error",
-                MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show($"Error saving: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
     private void Clear()
     {
+        _currentTrollId = null;
+        IsEditMode = false;
         SteamId = string.Empty;
         ProfileUrl = string.Empty;
         Nickname = string.Empty;

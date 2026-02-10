@@ -21,7 +21,7 @@ public class TrollPlayerRepository : ITrollPlayerRepository
         return trollPlayer;
     }
 
-    public async Task<TrollPlayer> DleteAsync(TrollPlayer entity)
+    public async Task<TrollPlayer> DeleteAsync(TrollPlayer entity)
     {
         var trollPlayer = await _repositoryBase.DeleteAsync(entity);
         return trollPlayer;
