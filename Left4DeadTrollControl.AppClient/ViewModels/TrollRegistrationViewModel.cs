@@ -1,12 +1,9 @@
-﻿using static System.Formats.Asn1.AsnWriter;
-
-namespace Left4DeadTrollControl.AppClient.ViewModels;
+﻿namespace Left4DeadTrollControl.AppClient.ViewModels;
 
 public class TrollRegistrationViewModel : INotifyPropertyChanged
 {
     private readonly ITrollPlayerService _trollPlayerService;
     private Guid? _currentTrollId;
-    private DateTime _createdAt;
 
     public TrollRegistrationViewModel(ITrollPlayerService trollPlayerService)
     {
@@ -133,14 +130,9 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
                     ProfileUrl = ProfileUrl,
                     Nickname = Nickname,
                     Notes = Notes
-                };                
+                };
 
-                // IMPORTANTE: Criar um novo scope para garantir DbContext limpo
-                using (var scope = App.CreateScope())
-                {
-                    var service = scope.ServiceProvider.GetRequiredService<ITrollPlayerService>();
-                    await service.UpdateAsync(_currentTrollId.Value, updatedTrollPlayer);
-                }
+                await _trollPlayerService.UpdateAsync(_currentTrollId.Value, updatedTrollPlayer);
 
                 MessageBox.Show("Troll updated successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
