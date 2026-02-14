@@ -34,7 +34,7 @@ public class TrollPlayerMapping : IEntityTypeConfiguration<TrollPlayer>
 
         builder
             .Property(tp => tp.Notes)
-            .IsRequired()
+            .IsRequired(false)
             .HasMaxLength(2000);
 
         builder
