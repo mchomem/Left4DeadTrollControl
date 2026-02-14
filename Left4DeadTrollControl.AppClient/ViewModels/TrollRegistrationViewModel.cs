@@ -5,6 +5,7 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
     private readonly ITrollPlayerService _trollPlayerService;
     private Guid? _currentTrollId;
 
+
     public TrollRegistrationViewModel(ITrollPlayerService trollPlayerService)
     {
         _trollPlayerService = trollPlayerService;
@@ -103,7 +104,6 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
             if (troll != null)
             {
                 _currentTrollId = trollId;
-                _createdAt = troll.CreatedAt;
                 IsEditMode = true;
                 SteamId = troll.SteamId;
                 ProfileUrl = troll.ProfileUrl;
