@@ -37,18 +37,21 @@ public class TrollPlayer
         if (SteamId.Length > 8)
             throw new ArgumentException("SteamId must be 8 characters long");
 
-        if (ProfileUrl.Length > 300)
+        if (ProfileUrl?.Length > 300)
             throw new ArgumentException("Profile Url must be at most 300 characters long");
 
-        if (Notes.Length > 2000)
+        if (Notes?.Length > 2000)
             throw new ArgumentException("Notes must be at most 2000 characters long");
 
-        var urlRegexPattern = @"^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)$";
-        bool isMatch = Regex.IsMatch(ProfileUrl, urlRegexPattern, RegexOptions.IgnoreCase);
-        bool isValidUri = Uri.TryCreate(ProfileUrl, UriKind.Absolute, out Uri resultUri)
-                          && (resultUri.Scheme == Uri.UriSchemeHttp || resultUri.Scheme == Uri.UriSchemeHttps);
+        if (!string.IsNullOrEmpty(ProfileUrl))
+        {
+            var urlRegexPattern = @"^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)$";
+            bool isMatch = Regex.IsMatch(ProfileUrl, urlRegexPattern, RegexOptions.IgnoreCase);
+            bool isValidUri = Uri.TryCreate(ProfileUrl, UriKind.Absolute, out Uri resultUri)
+                              && (resultUri.Scheme == Uri.UriSchemeHttp || resultUri.Scheme == Uri.UriSchemeHttps);
 
-        if (!isMatch || !isValidUri)
-            throw new ArgumentException($"The profile url '{ProfileUrl}' is not valid.");
+            if (!isMatch || !isValidUri)
+                throw new ArgumentException($"The profile url '{ProfileUrl}' is not valid.");
+        }
     }
 }
