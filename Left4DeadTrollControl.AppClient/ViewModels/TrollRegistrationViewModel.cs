@@ -4,16 +4,13 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
 {
     private readonly ITrollPlayerService _trollPlayerService;
     private Guid? _currentTrollId;
-    private static int _instanceCount = 0;
-    private readonly int _instanceId;
+
 
     public TrollRegistrationViewModel(ITrollPlayerService trollPlayerService)
     {
         _trollPlayerService = trollPlayerService;
         SaveCommand = new RelayCommand(async () => await SaveAsync(), CanSave);
-        ClearCommand = new RelayCommand(Clear);
-        _instanceId = System.Threading.Interlocked.Increment(ref _instanceCount);
-        System.Diagnostics.Debug.WriteLine($"[TrollRegistrationViewModel #{_instanceId}] CRIADO");
+        BackToListCommand = new RelayCommand(BackToList);
     }
 
     #region Properties
@@ -94,13 +91,12 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
     #region Commands
 
     public ICommand SaveCommand { get; }
-    public ICommand ClearCommand { get; }
+    public ICommand BackToListCommand { get; }
 
     private bool CanSave() => !string.IsNullOrWhiteSpace(SteamId);
 
     public async Task LoadTrollForEdit(Guid trollId)
     {
-        System.Diagnostics.Debug.WriteLine($"[TrollRegistrationViewModel #{_instanceId}] LoadTrollForEdit chamado com ID: {trollId}");
         try
         {
             var troll = await _trollPlayerService.GetAsync(trollId);
@@ -113,24 +109,20 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
                 ProfileUrl = troll.ProfileUrl;
                 Nickname = troll.Nickname;
                 Notes = troll.Notes;
-                System.Diagnostics.Debug.WriteLine($"[TrollRegistrationViewModel #{_instanceId}] Troll carregado com sucesso. IsEditMode={IsEditMode}");
             }
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[TrollRegistrationViewModel #{_instanceId}] ERRO ao carregar: {ex.Message}");
             MessageBox.Show($"Error loading troll data: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
     private async Task SaveAsync()
     {
-        System.Diagnostics.Debug.WriteLine($"[TrollRegistrationViewModel #{_instanceId}] SaveAsync chamado. IsEditMode={IsEditMode}, CurrentTrollId={_currentTrollId}");
         try
         {
             if (IsEditMode && _currentTrollId.HasValue)
             {
-                System.Diagnostics.Debug.WriteLine($"[TrollRegistrationViewModel #{_instanceId}] Modo EDIÇÃO - Atualizando troll {_currentTrollId}");
                 var updatedTrollPlayer = new TrollPlayerUpdateDto
                 {
                     Id = _currentTrollId.Value,
@@ -146,7 +138,6 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
             }
             else
             {
-                System.Diagnostics.Debug.WriteLine($"[TrollRegistrationViewModel #{_instanceId}] Modo CRIAÇÃO - Criando novo troll");
                 // Create a new record.
                 var newTrollPlayer = new TrollPlayerInsertDto
                 {
@@ -161,24 +152,20 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
                 MessageBox.Show("Troll registered successfully!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
-            Clear();
+            BackToList();
         }
         catch (Exception ex)
         {
-            System.Diagnostics.Debug.WriteLine($"[TrollRegistrationViewModel #{_instanceId}] ERRO ao salvar: {ex.Message}");
             MessageBox.Show($"Error saving: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
-    private void Clear()
+    private void BackToList()
     {
-        _currentTrollId = null;
-        IsEditMode = false;
-        SteamId = string.Empty;
-        ProfileUrl = string.Empty;
-        Nickname = string.Empty;
-        Notes = string.Empty;
-        CountCharactersTextNotes = 0;
+        if(System.Windows.Application.Current.MainWindow is MainWindow mainWindow)
+        {
+            mainWindow.ContentArea.Content = App.GetService<TrollListPage>();
+        }
     }
 
     #endregion
