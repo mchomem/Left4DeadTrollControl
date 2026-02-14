@@ -59,13 +59,14 @@ public class TrollPlayerService : ITrollPlayerService
 
     public async Task<TrollPlayerDto> UpdateAsync(Guid id, TrollPlayerUpdateDto entity)
     {
-        var customer = await _trollPlayerRepository.GetAsync(id);
+        var trollPlayer = await _trollPlayerRepository.GetAsync(id);
 
-        if (customer is null)
+        if (trollPlayer is null)
             throw new Exception("Troll player not found.");
 
-        customer.Update(entity.SteamId, entity.ProfileUrl, entity.Nickname, entity.Notes);
-        var updatedCustomer = await _trollPlayerRepository.UpdateAsync(customer);
+        trollPlayer.Update(entity.SteamId, entity.ProfileUrl, entity.Nickname, entity.Notes);
+        trollPlayer.ExecuteValidations();
+        var updatedCustomer = await _trollPlayerRepository.UpdateAsync(trollPlayer);
 
         return _mapper.Map<TrollPlayerDto>(updatedCustomer);
     }
