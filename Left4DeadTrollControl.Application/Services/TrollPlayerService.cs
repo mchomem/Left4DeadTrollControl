@@ -4,11 +4,15 @@ public class TrollPlayerService : ITrollPlayerService
 {
     private readonly ITrollPlayerRepository _trollPlayerRepository;
     private readonly IMapper _mapper;
+    private static int _instanceCount = 0;
+    private readonly int _instanceId;
 
     public TrollPlayerService(ITrollPlayerRepository trollPlayerRepository, IMapper mapper)
     {
         _trollPlayerRepository = trollPlayerRepository;
         _mapper = mapper;
+        _instanceId = System.Threading.Interlocked.Increment(ref _instanceCount);
+        System.Diagnostics.Debug.WriteLine($"[TrollPlayerService #{_instanceId}] CRIADO");
     }
 
     public async Task<TrollPlayerDto> CreateAsync(TrollPlayerInsertDto entity)
@@ -59,13 +63,20 @@ public class TrollPlayerService : ITrollPlayerService
 
     public async Task<TrollPlayerDto> UpdateAsync(Guid id, TrollPlayerUpdateDto entity)
     {
+        System.Diagnostics.Debug.WriteLine($"[TrollPlayerService #{_instanceId}] UpdateAsync chamado para ID: {id}");
+
         var customer = await _trollPlayerRepository.GetAsync(id);
+        System.Diagnostics.Debug.WriteLine($"[TrollPlayerService #{_instanceId}] Entidade recuperada do repositório: {(customer != null ? "SIM" : "NÃO")}");
 
         if (customer is null)
             throw new Exception("Troll player not found.");
 
+        System.Diagnostics.Debug.WriteLine($"[TrollPlayerService #{_instanceId}] Valores ANTES do Update: SteamId={customer.SteamId}, Nickname={customer.Nickname}");
         customer.Update(entity.SteamId, entity.ProfileUrl, entity.Nickname, entity.Notes);
+        System.Diagnostics.Debug.WriteLine($"[TrollPlayerService #{_instanceId}] Valores DEPOIS do Update: SteamId={customer.SteamId}, Nickname={customer.Nickname}");
+
         var updatedCustomer = await _trollPlayerRepository.UpdateAsync(customer);
+        System.Diagnostics.Debug.WriteLine($"[TrollPlayerService #{_instanceId}] UpdateAsync concluído com sucesso");
 
         return _mapper.Map<TrollPlayerDto>(updatedCustomer);
     }

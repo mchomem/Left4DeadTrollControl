@@ -11,7 +11,12 @@ public static class DependenceInjectionAppClient
 
         services.AddDbContext<Left4DeadTrollControlContext>(options =>
         {
-            options.UseSqlite($"Data Source={dbPath}");
+            options.UseSqlite($"Data Source={dbPath}")
+                .EnableSensitiveDataLogging()  // Mostra os valores dos parâmetros
+                .LogTo(
+                    message => System.Diagnostics.Debug.WriteLine(message),
+                    new[] { Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.CommandExecuted }
+                );
         });
 
         #endregion

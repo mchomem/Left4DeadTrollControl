@@ -76,11 +76,22 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
 
     public async Task<TEntity> GetAsync(Guid id)
     {
-        var idString = id.ToString();
+        var idString = id.ToString().ToLower();  // CRÍTICO: força lowercase para compatibilidade com SQLite
+        System.Diagnostics.Debug.WriteLine($"[RepositoryBase] GetAsync - Buscando ID: {id} (lowercase: {idString})");
 
         var entity = await _dbSet
-            .Where(e => EF.Property<string>(e, "Id") == idString)
+            //.Where(e => EF.Property<string>(e, "Id") == idString)
             .FirstOrDefaultAsync();
+
+        if (entity != null)
+        {
+            var entry = _appDbContext.Entry(entity);
+            System.Diagnostics.Debug.WriteLine($"[RepositoryBase] GetAsync - Entidade encontrada. Estado: {entry.State}");
+        }
+        else
+        {
+            System.Diagnostics.Debug.WriteLine($"[RepositoryBase] GetAsync - Entidade NÃO encontrada!");
+        }
 
         return entity!;
     }
@@ -104,8 +115,31 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
 
     public async Task<TEntity> UpdateAsync(TEntity entity)
     {
+        System.Diagnostics.Debug.WriteLine($"[RepositoryBase] ===== INÍCIO UpdateAsync =====");
+
+        var entry = _appDbContext.Entry(entity);
+        System.Diagnostics.Debug.WriteLine($"[RepositoryBase] Estado da entidade: {entry.State}");
+        System.Diagnostics.Debug.WriteLine($"[RepositoryBase] ID da entidade: {entry.Property("Id").CurrentValue}");
+
+        // Lista propriedades modificadas
+        var modifiedProps = entry.Properties.Where(p => p.IsModified).Select(p => p.Metadata.Name);
+        System.Diagnostics.Debug.WriteLine($"[RepositoryBase] Propriedades modificadas: {string.Join(", ", modifiedProps)}");
+
         _dbSet.Update(entity);
-        await _appDbContext.SaveChangesAsync();
-        return _appDbContext.Entry(entity).Entity;
+
+        System.Diagnostics.Debug.WriteLine($"[RepositoryBase] Chamando SaveChangesAsync...");
+        try
+        {
+            var result = await _appDbContext.SaveChangesAsync();
+            System.Diagnostics.Debug.WriteLine($"[RepositoryBase] ✅ SaveChanges afetou {result} linha(s)");
+            System.Diagnostics.Debug.WriteLine($"[RepositoryBase] ===== FIM UpdateAsync (SUCESSO) =====");
+            return _appDbContext.Entry(entity).Entity;
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine($"[RepositoryBase] ===== FIM UpdateAsync (ERRO) =====");
+            System.Diagnostics.Debug.WriteLine($"[RepositoryBase] ❌ ERRO: {ex.GetType().Name}: {ex.Message}");
+            throw;
+        }
     }
 }
