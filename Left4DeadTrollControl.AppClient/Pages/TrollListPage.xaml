@@ -58,6 +58,16 @@ d:DesignHeight="550" d:DesignWidth="560">
             </Style.Triggers>
         </Style>
 
+        <!-- New Button Style -->
+        <Style x:Key="NewButtonStyle" TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#388E3C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- Search TextBox Style -->
         <Style x:Key="SearchTextBoxStyle" TargetType="TextBox">
             <Setter Property="Padding" Value="3"/>
@@ -156,6 +166,7 @@ d:DesignHeight="550" d:DesignWidth="560">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -167,8 +178,17 @@ d:DesignHeight="550" d:DesignWidth="560">
                        FontWeight="SemiBold"/>
         </Border>
 
+        <!-- New Button Section -->
+        <Border Grid.Row="1" Background="#F9F9F9" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="20,10">
+            <Button Content="New"
+                    Style="{StaticResource NewButtonStyle}"
+                    Command="{Binding NewCommand}"
+                    HorizontalAlignment="Right"
+                    MinWidth="100"/>
+        </Border>
+
         <!-- Toolbar -->
-        <Border Grid.Row="1" Background="#F9F9F9" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="20,15">
+        <Border Grid.Row="2" Background="#F9F9F9" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="20,15">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -259,7 +279,7 @@ d:DesignHeight="550" d:DesignWidth="560">
         </Border>
 
         <!-- Content Area -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <!-- Empty State Message -->
             <Border Background="#F9F9F9" 
                     BorderBrush="#E0E0E0" 
@@ -300,7 +320,7 @@ d:DesignHeight="550" d:DesignWidth="560">
                       ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
                       CellStyle="{StaticResource DataGridCellStyle}"
                       RowStyle="{StaticResource DataGridRowStyle}"
-                      Margin="20">
+                      Margin="20,10,20,20">
                 <DataGrid.Style>
                     <Style TargetType="DataGrid" BasedOn="{StaticResource DataGridStyle}">
                         <Setter Property="Visibility" Value="Visible"/>

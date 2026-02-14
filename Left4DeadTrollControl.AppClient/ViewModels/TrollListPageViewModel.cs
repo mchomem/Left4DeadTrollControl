@@ -11,6 +11,7 @@ public class TrollListPageViewModel : INotifyPropertyChanged
         UpdateCommand = new RelayCommand<Guid>(async (id) => await UpdateAsync(id));
         DeleteCommand = new RelayCommand<Guid>(async (id) => await DeleteAsync(id));
         ClearCommand = new RelayCommand(async () => await ClearFiltersAsync());
+        NewCommand = new RelayCommand(async () => await NewAsync());
 
         // Load data on initialization
         _ = ListAsync();
@@ -64,6 +65,7 @@ public class TrollListPageViewModel : INotifyPropertyChanged
     public ICommand UpdateCommand { get; }
     public ICommand DeleteCommand { get; }
     public ICommand ClearCommand { get; }
+    public ICommand NewCommand { get; }
 
     private async Task ListAsync()
     {
@@ -132,6 +134,21 @@ public class TrollListPageViewModel : INotifyPropertyChanged
         SearchText = string.Empty;
         NicknameSearchText = string.Empty;
         await ListAsync();
+    }
+
+    private async Task NewAsync()
+    {
+        try
+        {
+            var mainWindow = System.Windows.Application.Current.MainWindow as MainWindow;
+            mainWindow?.NavigateToRegistration();
+
+            await Task.CompletedTask;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error navigating to registration: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     #endregion

@@ -16,9 +16,8 @@ public partial class MainWindow : Window
         ContentArea.Content = new HomePage();
     }
 
-    private void NavigateToRegistration(object sender, RoutedEventArgs e)
+    public void NavigateToRegistration()
     {
-        // Resolve a página com suas dependências injetadas
         ContentArea.Content = App.GetService<TrollRegistrationPage>();
     }
 
