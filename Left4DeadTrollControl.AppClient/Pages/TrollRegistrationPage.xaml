@@ -148,6 +148,7 @@
                 <StackPanel Grid.Column="2">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Nickname" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text="*" Foreground="Red" FontSize="13" Margin="3,0,0,5"/>
                         <TextBlock Text=" - Custom identification"
                             FontSize="11"
                             Foreground="#999999"
