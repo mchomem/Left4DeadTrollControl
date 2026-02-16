@@ -215,6 +215,7 @@ d:DesignHeight="550" d:DesignWidth="560">
                              Grid.Row="1"
                              Style="{StaticResource SearchTextBoxStyle}"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="9"
                              GotFocus="SearchTextBox_GotFocus"
                              LostFocus="SearchTextBox_LostFocus"/>
 
