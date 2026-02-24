@@ -34,6 +34,15 @@
             </Style.Triggers>
         </Style>
 
+        <!-- Disbled TextBox Style -->
+        <Style x:Key="DisabledTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource ModernTextBoxStyle}">
+            <Setter Property="Background" Value="#F0F0F0"/>
+            <Setter Property="Foreground" Value="#999999"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="Cursor" Value="Arrow"/>
+        </Style>
+
         <!-- Label Style -->
         <Style TargetType="TextBlock" x:Key="LabelStyle">
             <Setter Property="FontSize" Value="13"/>
@@ -177,7 +186,7 @@
             </StackPanel>
 
             <!-- Notes -->
-            <StackPanel Margin="0,0,0,30">
+            <StackPanel Margin="0,0,0,20">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Notes" Style="{StaticResource LabelStyle}"/>
                     <TextBlock Text=" - Additional notes about the troll"
@@ -196,6 +205,43 @@
                 <TextBlock Text="{Binding CountCharactersTextNotes, StringFormat='{}{0}/2000'}"
                            FontSize="11"/>
             </StackPanel>
+
+            <!-- Created At and Updated At (side by side) -->
+            <Grid Margin="0,0,0,20">
+                <Grid.Style>
+                    <Style TargetType="Grid">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsEditMode}" Value="True">
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Grid.Style>
+                
+                
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="150"/>
+                    <ColumnDefinition Width="15"/>
+                    <ColumnDefinition Width="150"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Created At -->
+                <StackPanel Grid.Column="0">
+                    <TextBlock Text="Created at"
+                           Style="{StaticResource LabelStyle}"/>
+                    <TextBox Text="{Binding FormattedCreatedAt, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource DisabledTextBoxStyle}"/>
+                </StackPanel>
+
+                <!-- Updated At -->
+                <StackPanel Grid.Column="2">
+                    <TextBlock Text="Updated at"
+                           Style="{StaticResource LabelStyle}"/>
+                    <TextBox Text="{Binding FormattedUpdatedAt, UpdateSourceTrigger=PropertyChanged}"
+                         Style="{StaticResource DisabledTextBoxStyle}"/>
+                </StackPanel>
+            </Grid>
 
             <!-- Action Buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
