@@ -8,8 +8,8 @@ public class TrollListPageViewModel : INotifyPropertyChanged
     {
         _trollPlayerService = trollPlayerService;
         ListCommand = new RelayCommand(async () => await ListAsync());
-        UpdateCommand = new RelayCommand<Guid>(async (id) => await UpdateAsync(id));
-        DeleteCommand = new RelayCommand<Guid>(async (id) => await DeleteAsync(id));
+        UpdateCommand = new RelayCommand<TrollPlayerDto>(async (troll) => await UpdateAsync(troll));
+        DeleteCommand = new RelayCommand<TrollPlayerDto>(async (troll) => await DeleteAsync(troll));
         ClearCommand = new RelayCommand(async () => await ClearFiltersAsync());
         NewCommand = new RelayCommand(async () => await NewAsync());
 
@@ -88,12 +88,18 @@ public class TrollListPageViewModel : INotifyPropertyChanged
         }
     }
 
-    private async Task UpdateAsync(Guid id)
+    private async Task UpdateAsync(TrollPlayerDto troll)
     {
         try
         {
+            if (troll == null)
+            {
+                MessageBox.Show("Invalid troll data.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             var mainWindow = System.Windows.Application.Current.MainWindow as MainWindow;
-            mainWindow?.NavigateToRegistrationWithId(id);
+            mainWindow?.NavigateToRegistrationWithId(troll.Id);
 
             await Task.CompletedTask;
         }
@@ -103,10 +109,16 @@ public class TrollListPageViewModel : INotifyPropertyChanged
         }
     }
 
-    private async Task DeleteAsync(Guid id)
+    private async Task DeleteAsync(TrollPlayerDto troll)
     {
         try
         {
+            if (troll == null)
+            {
+                MessageBox.Show("Invalid troll data.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             var confirmResult = MessageBox.Show(
                 "Are you sure you want to delete this troll?",
                 "Confirmation",
@@ -115,7 +127,7 @@ public class TrollListPageViewModel : INotifyPropertyChanged
 
             if (confirmResult == MessageBoxResult.Yes)
             {
-                await _trollPlayerService.DeleteAsync(id);
+                await _trollPlayerService.DeleteAsync(troll.Id);
                 await ListAsync(); // Reload list
 
                 MessageBox.Show("Troll deleted successfully!", "Success",

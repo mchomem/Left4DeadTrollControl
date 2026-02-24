@@ -76,7 +76,7 @@ public class RepositoryBase<TEntity> : IRepositoryBase<TEntity> where TEntity : 
 
     public async Task<TEntity> GetAsync(Guid id)
     {
-        var entity = await _dbSet.FirstOrDefaultAsync();
+        var entity = await _dbSet.FindAsync(id);
         return entity!;
     }
 
