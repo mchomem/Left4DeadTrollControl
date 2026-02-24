@@ -148,6 +148,7 @@
                 <StackPanel Grid.Column="2">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Nickname" Style="{StaticResource LabelStyle}"/>
+                        <TextBlock Text="*" Foreground="Red" FontSize="13" Margin="3,0,0,5"/>
                         <TextBlock Text=" - Custom identification"
                             FontSize="11"
                             Foreground="#999999"
@@ -198,9 +199,9 @@
 
             <!-- Action Buttons -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Clear" 
+                <Button Content="Back" 
                         Style="{StaticResource SecondaryButtonStyle}"
-                        Command="{Binding ClearCommand}"
+                        Command="{Binding BackToListCommand}"
                         Margin="0,0,10,0"/>
                 <Button Content="Save" 
                         Style="{StaticResource PrimaryButtonStyle}"

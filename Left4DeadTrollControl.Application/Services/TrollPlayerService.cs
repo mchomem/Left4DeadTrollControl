@@ -31,7 +31,7 @@ public class TrollPlayerService : ITrollPlayerService
         if (trollPlayer is null)
             throw new Exception("Troll player not found.");
 
-        var deletedCustomer = await _trollPlayerRepository.DleteAsync(trollPlayer);
+        var deletedCustomer = await _trollPlayerRepository.DeleteAsync(trollPlayer);
 
         return _mapper.Map<TrollPlayerDto>(deletedCustomer);
     }
@@ -49,7 +49,7 @@ public class TrollPlayerService : ITrollPlayerService
 
     public async Task<TrollPlayerDto> GetAsync(Guid id)
     {
-        var user = await _trollPlayerRepository.GetAsync(x => x.Id == id);
+        var user = await _trollPlayerRepository.GetAsync(id);
 
         if (user is null)
             throw new Exception("Troll player not found.");
@@ -59,13 +59,14 @@ public class TrollPlayerService : ITrollPlayerService
 
     public async Task<TrollPlayerDto> UpdateAsync(Guid id, TrollPlayerUpdateDto entity)
     {
-        var customer = await _trollPlayerRepository.GetAsync(id);
+        var trollPlayer = await _trollPlayerRepository.GetAsync(id);
 
-        if (customer is null)
+        if (trollPlayer is null)
             throw new Exception("Troll player not found.");
 
-        customer.Update(entity.SteamId, entity.ProfileUrl, entity.Nickname, entity.Notes);
-        var updatedCustomer = await _trollPlayerRepository.UpdateAsync(customer);
+        trollPlayer.Update(entity.SteamId, entity.ProfileUrl, entity.Nickname, entity.Notes);
+        trollPlayer.ExecuteValidations();
+        var updatedCustomer = await _trollPlayerRepository.UpdateAsync(trollPlayer);
 
         return _mapper.Map<TrollPlayerDto>(updatedCustomer);
     }

@@ -8,10 +8,11 @@ public class TrollListPageViewModel : INotifyPropertyChanged
     {
         _trollPlayerService = trollPlayerService;
         ListCommand = new RelayCommand(async () => await ListAsync());
+        UpdateCommand = new RelayCommand<Guid>(async (id) => await UpdateAsync(id));
         DeleteCommand = new RelayCommand<Guid>(async (id) => await DeleteAsync(id));
         ClearCommand = new RelayCommand(async () => await ClearFiltersAsync());
-        
-        // Load data on initialization
+        NewCommand = new RelayCommand(async () => await NewAsync());
+
         _ = ListAsync();
     }
 
@@ -60,8 +61,10 @@ public class TrollListPageViewModel : INotifyPropertyChanged
     #region Commands
 
     public ICommand ListCommand { get; }
+    public ICommand UpdateCommand { get; }
     public ICommand DeleteCommand { get; }
     public ICommand ClearCommand { get; }
+    public ICommand NewCommand { get; }
 
     private async Task ListAsync()
     {
@@ -74,13 +77,28 @@ public class TrollListPageViewModel : INotifyPropertyChanged
             };
 
             var result = await _trollPlayerService.GetAllAsync(filter);
-            
+
             Trolls = new ObservableCollection<TrollPlayerDto>(result);
         }
         catch (Exception ex)
         {
             MessageBox.Show($"Error listing: {ex.Message}", "Error",
                 MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    private async Task UpdateAsync(Guid id)
+    {
+        try
+        {
+            var mainWindow = System.Windows.Application.Current.MainWindow as MainWindow;
+            mainWindow?.NavigateToRegistrationWithId(id);
+
+            await Task.CompletedTask;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error updating: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -98,7 +116,7 @@ public class TrollListPageViewModel : INotifyPropertyChanged
             {
                 await _trollPlayerService.DeleteAsync(id);
                 await ListAsync(); // Reload list
-                
+
                 MessageBox.Show("Troll deleted successfully!", "Success",
                     MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -115,6 +133,21 @@ public class TrollListPageViewModel : INotifyPropertyChanged
         SearchText = string.Empty;
         NicknameSearchText = string.Empty;
         await ListAsync();
+    }
+
+    private async Task NewAsync()
+    {
+        try
+        {
+            var mainWindow = System.Windows.Application.Current.MainWindow as MainWindow;
+            mainWindow?.NavigateToRegistration();
+
+            await Task.CompletedTask;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error navigating to registration: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
     }
 
     #endregion

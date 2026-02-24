@@ -15,7 +15,7 @@ public partial class TrollListPage : UserControl
     {
         if (SearchTextBox.Text == SteamIdPlaceholder)
         {
-            SearchTextBox.Text = "";
+            SearchTextBox.Text = string.Empty;
             SearchTextBox.Foreground = new SolidColorBrush(Color.FromRgb(51, 51, 51));
         }
     }
@@ -33,7 +33,7 @@ public partial class TrollListPage : UserControl
     {
         if (NicknameTextBox.Text == NicknamePlaceholder)
         {
-            NicknameTextBox.Text = "";
+            NicknameTextBox.Text = string.Empty;
             NicknameTextBox.Foreground = new SolidColorBrush(Color.FromRgb(51, 51, 51));
         }
     }

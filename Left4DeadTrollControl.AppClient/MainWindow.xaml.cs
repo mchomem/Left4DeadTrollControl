@@ -16,9 +16,8 @@ public partial class MainWindow : Window
         ContentArea.Content = new HomePage();
     }
 
-    private void NavigateToRegistration(object sender, RoutedEventArgs e)
+    public void NavigateToRegistration()
     {
-        // Resolve a página com suas dependências injetadas
         ContentArea.Content = App.GetService<TrollRegistrationPage>();
     }
 
@@ -40,5 +39,18 @@ public partial class MainWindow : Window
     private void NavigateToAbout(object sender, RoutedEventArgs e)
     {
         ContentArea.Content = new AboutPage();
+    }
+
+    public async void NavigateToRegistrationWithId(Guid id)
+    {
+        var registrationPage = App.GetService<TrollRegistrationPage>();
+        var viewModel = registrationPage.DataContext as TrollRegistrationViewModel;
+        
+        if (viewModel != null)
+        {
+            await viewModel.LoadTrollForEdit(id);
+        }
+        
+        ContentArea.Content = registrationPage;
     }
 }

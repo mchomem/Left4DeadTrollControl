@@ -8,6 +8,15 @@ public class TrollPlayerMapping : IEntityTypeConfiguration<TrollPlayer>
             .ToTable("TrollPlayer")
             .HasKey(tp => tp.Id);
 
+        // CRÍTICO: Configuração explícita de conversão Guid <-> string para SQLite
+        builder
+            .Property(tp => tp.Id)
+            .HasConversion(
+                v => v.ToString().ToLower(),  // Guid -> string (sempre lowercase)
+                v => Guid.Parse(v)            // string -> Guid
+            )
+            .HasColumnType("TEXT");
+
         builder
             .Property(tp => tp.SteamId)
             .IsRequired()
@@ -25,7 +34,7 @@ public class TrollPlayerMapping : IEntityTypeConfiguration<TrollPlayer>
 
         builder
             .Property(tp => tp.Notes)
-            .IsRequired()
+            .IsRequired(false)
             .HasMaxLength(2000);
 
         builder

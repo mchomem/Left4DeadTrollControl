@@ -38,12 +38,32 @@ d:DesignHeight="550" d:DesignWidth="560">
             </Style.Triggers>
         </Style>
 
+        <!--Edit Button Style -->
+        <Style x:Key="UpdateButtonStyle" TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
+            <Setter Property="Background" Value="#007ACC"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#005A9E"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
         <!-- Delete Button Style -->
         <Style x:Key="DeleteButtonStyle" TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
             <Setter Property="Background" Value="#D32F2F"/>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter Property="Background" Value="#B71C1C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <!-- New Button Style -->
+        <Style x:Key="NewButtonStyle" TargetType="Button" BasedOn="{StaticResource ActionButtonStyle}">
+            <Setter Property="Background" Value="#4CAF50"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#388E3C"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -146,6 +166,7 @@ d:DesignHeight="550" d:DesignWidth="560">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -157,8 +178,17 @@ d:DesignHeight="550" d:DesignWidth="560">
                        FontWeight="SemiBold"/>
         </Border>
 
+        <!-- New Button Section -->
+        <Border Grid.Row="1" Background="#F9F9F9" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="20,10">
+            <Button Content="New"
+                    Style="{StaticResource NewButtonStyle}"
+                    Command="{Binding NewCommand}"
+                    HorizontalAlignment="Right"
+                    MinWidth="100"/>
+        </Border>
+
         <!-- Toolbar -->
-        <Border Grid.Row="1" Background="#F9F9F9" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="20,15">
+        <Border Grid.Row="2" Background="#F9F9F9" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1" Padding="20,15">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
@@ -173,21 +203,22 @@ d:DesignHeight="550" d:DesignWidth="560">
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    
+
                     <TextBlock Grid.Row="0" 
                                Text="Steam ID"
                                FontSize="12"
                                FontWeight="SemiBold"
                                Foreground="#333333"
                                Margin="0,0,0,5"/>
-                    
+
                     <TextBox x:Name="SearchTextBox" 
                              Grid.Row="1"
                              Style="{StaticResource SearchTextBoxStyle}"
                              Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                             MaxLength="9"
                              GotFocus="SearchTextBox_GotFocus"
                              LostFocus="SearchTextBox_LostFocus"/>
-                    
+
                     <!-- Info -->
                     <TextBlock Grid.Row="2"
                                FontSize="12"
@@ -205,14 +236,14 @@ d:DesignHeight="550" d:DesignWidth="560">
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    
+
                     <TextBlock Grid.Row="0" 
                                Text="Nickname"
                                FontSize="12"
                                FontWeight="SemiBold"
                                Foreground="#333333"
                                Margin="0,0,0,5"/>
-                    
+
                     <TextBox x:Name="NicknameTextBox" 
                              Grid.Row="1"
                              Style="{StaticResource SearchTextBoxStyle}"
@@ -229,7 +260,7 @@ d:DesignHeight="550" d:DesignWidth="560">
                             Style="{StaticResource ActionButtonStyle}"
                             Command="{Binding ListCommand}"
                             Margin="0,0,5,0"/>
-                    
+
                     <Button Content="Clear"
                             Command="{Binding ClearCommand}"
                             Margin="0">
@@ -249,7 +280,7 @@ d:DesignHeight="550" d:DesignWidth="560">
         </Border>
 
         <!-- Content Area -->
-        <Grid Grid.Row="2">
+        <Grid Grid.Row="3">
             <!-- Empty State Message -->
             <Border Background="#F9F9F9" 
                     BorderBrush="#E0E0E0" 
@@ -290,7 +321,7 @@ d:DesignHeight="550" d:DesignWidth="560">
                       ColumnHeaderStyle="{StaticResource DataGridHeaderStyle}"
                       CellStyle="{StaticResource DataGridCellStyle}"
                       RowStyle="{StaticResource DataGridRowStyle}"
-                      Margin="20">
+                      Margin="20,10,20,20">
                 <DataGrid.Style>
                     <Style TargetType="DataGrid" BasedOn="{StaticResource DataGridStyle}">
                         <Setter Property="Visibility" Value="Visible"/>
@@ -336,22 +367,45 @@ d:DesignHeight="550" d:DesignWidth="560">
                         </DataGridTemplateColumn.HeaderStyle>
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Button 
+                                <StackPanel Orientation="Horizontal"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center">
+                                    <Button
+                                        Style="{StaticResource UpdateButtonStyle}"
+                                        Command="{Binding DataContext.UpdateCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
+                                        CommandParameter="{Binding Id}"
+                                        Margin="0,0,5,0"
+                                        Padding="12,8"
+                                        HorizontalAlignment="Center"
+                                        VerticalAlignment="Center"
+                                        ToolTip="Update">
+                                        <StackPanel Orientation="Horizontal">
+                                            <fa:IconImage Icon="Pen"
+                                                      Foreground="White"
+                                                      Width="16"
+                                                      Height="16"/>
+                                        </StackPanel>
+                                    </Button>
+
+                                    <Button 
                                         Style="{StaticResource DeleteButtonStyle}"
-                                        Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                        Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}"
                                         CommandParameter="{Binding Id}"
                                         Margin="0"
                                         Padding="12,8"
                                         HorizontalAlignment="Center"
                                         VerticalAlignment="Center"
                                         ToolTip="Delete">
-                                    <StackPanel Orientation="Horizontal">
-                                        <fa:IconImage Icon="Trash"
+                                        <StackPanel Orientation="Horizontal">
+                                            <fa:IconImage Icon="Trash"
                                                       Foreground="White"
                                                       Width="16"
                                                       Height="16"/>
-                                    </StackPanel>
-                                </Button>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+
+
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
