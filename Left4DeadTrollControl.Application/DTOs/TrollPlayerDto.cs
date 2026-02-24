@@ -1,4 +1,6 @@
-﻿namespace Left4DeadTrollControl.Application.DTOs;
+﻿using System.Globalization;
+
+namespace Left4DeadTrollControl.Application.DTOs;
 
 public class TrollPlayerDto
 {
@@ -9,6 +11,22 @@ public class TrollPlayerDto
     public string Notes { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
+    public string FormattedCreatedAt
+    {
+        get
+        {
+            var cultureInfo = CultureInfo.CurrentCulture;
+            return CreatedAt.ToString("G", cultureInfo);
+        }
+    }
+    public string FormattedUpdatedAt
+    {
+        get
+        {
+            var cultureInfo = CultureInfo.CurrentCulture;
+            return UpdatedAt?.ToString("G", cultureInfo) ?? string.Empty;
+        }
+    }
 }
 
 public class TrollPlayerInsertDto

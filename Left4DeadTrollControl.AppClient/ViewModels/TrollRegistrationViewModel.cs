@@ -5,7 +5,6 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
     private readonly ITrollPlayerService _trollPlayerService;
     private Guid? _currentTrollId;
 
-
     public TrollRegistrationViewModel(ITrollPlayerService trollPlayerService)
     {
         _trollPlayerService = trollPlayerService;
@@ -86,6 +85,28 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
         }
     }
 
+    private string _formattedCreatedAt;
+    public string FormattedCreatedAt
+    {
+        get => _formattedCreatedAt;
+        set
+        {
+            _formattedCreatedAt = value;
+            OnPropertyChanged();
+        }
+    }
+
+    private string _formattedUpdatedAt;
+    public string FormattedUpdatedAt
+    {
+        get => _formattedUpdatedAt;
+        set
+        {
+            _formattedUpdatedAt = value;
+            OnPropertyChanged();
+        }
+    }
+
     #endregion
 
     #region Commands
@@ -109,6 +130,8 @@ public class TrollRegistrationViewModel : INotifyPropertyChanged
                 ProfileUrl = troll.ProfileUrl;
                 Nickname = troll.Nickname;
                 Notes = troll.Notes;
+                FormattedCreatedAt = troll.FormattedCreatedAt;
+                FormattedUpdatedAt = troll.FormattedUpdatedAt;
             }
         }
         catch (Exception ex)
