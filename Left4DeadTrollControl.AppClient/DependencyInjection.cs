@@ -8,6 +8,7 @@ public static class DependencyInjection
         services.AddScoped<TrollListPageViewModel>();
         services.AddScoped<ScriptGenerationPageViewModel>();
         services.AddScoped<SettingsPageViewModel>();
+        services.AddScoped<ImportExportPageViewModel>();
 
         return services;
     }

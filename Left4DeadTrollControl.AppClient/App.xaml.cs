@@ -37,6 +37,7 @@ public partial class App : System.Windows.Application
         services.AddScoped<TrollListPage>();
         services.AddScoped<ScriptGenerationPage>();
         services.AddScoped<SettingsPage>();
+        services.AddScoped<ImportExportPage>();
 
         _serviceProvider = services.BuildServiceProvider();
 

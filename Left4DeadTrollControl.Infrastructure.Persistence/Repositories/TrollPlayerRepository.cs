@@ -21,6 +21,12 @@ public class TrollPlayerRepository : ITrollPlayerRepository
         return trollPlayer;
     }
 
+    public async Task<IEnumerable<TrollPlayer>> CreateRangeAsync(IEnumerable<TrollPlayer> entities)
+    {
+        var trollPlayers = await _repositoryBase.CreateRangeAsync(entities);
+        return trollPlayers;
+    }
+
     public async Task<TrollPlayer> DeleteAsync(TrollPlayer entity)
     {
         var trollPlayer = await _repositoryBase.DeleteAsync(entity);
