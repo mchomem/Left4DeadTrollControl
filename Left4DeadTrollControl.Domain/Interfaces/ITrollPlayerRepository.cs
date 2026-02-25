@@ -3,6 +3,7 @@
 public interface ITrollPlayerRepository
 {
     public Task<TrollPlayer> CreateAsync(TrollPlayer entity);
+    public Task<IEnumerable<TrollPlayer>> CreateRangeAsync(IEnumerable<TrollPlayer> entities);
     public Task<TrollPlayer> DeleteAsync(TrollPlayer entity);
     public Task<TrollPlayer> UpdateAsync(TrollPlayer entity);
     public Task<TrollPlayer> GetAsync(Guid id);

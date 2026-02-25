@@ -148,6 +148,15 @@
                             <TextBlock Text="Troll Records"/>
                         </StackPanel>
                     </Button>
+
+                    <Button x:Name="ImportExportButton"
+                            Style="{StaticResource MenuButtonStyle}"
+                            Click="ImportExport_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="📂" FontSize="16" Margin="0,0,10,0"/>
+                            <TextBlock Text="Import/Export"/>
+                        </StackPanel>
+                    </Button>
                     
                     <Button x:Name="ScriptGenerationButton" 
                             Style="{StaticResource MenuButtonStyle}"

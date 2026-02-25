@@ -24,6 +24,19 @@ public class TrollPlayerService : ITrollPlayerService
         return _mapper.Map<TrollPlayerDto>(createdTrollPlayer);
     }
 
+    public async Task<IEnumerable<TrollPlayerDto>> CreateRangeAsync(IEnumerable<TrollPlayerInsertDto> entities)
+    {
+        var trollPlayers = entities.Select(entity =>
+        {
+            var trollPlayer = new TrollPlayer(entity.SteamId, entity.ProfileUrl, entity.Nickname, entity.Notes);
+            trollPlayer.ExecuteValidations();
+            return trollPlayer;
+        }).ToList();
+
+        var createdTrollPlayers = await _trollPlayerRepository.CreateRangeAsync(trollPlayers);
+        return _mapper.Map<IEnumerable<TrollPlayerDto>>(createdTrollPlayers);
+    }
+
     public async Task<TrollPlayerDto> DeleteAsync(Guid id)
     {
         var trollPlayer = await _trollPlayerRepository.GetAsync(id);

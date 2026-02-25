@@ -103,23 +103,19 @@ d:DesignHeight="550" d:DesignWidth="560">
                                FontSize="13" 
                                Foreground="#666666"
                                LineHeight="20">
-                        <Run Text="This process will generate an autoexec script based on the data registered in the system."/>
-                        <LineBreak/>
-                        <LineBreak/>
-                        <Run Text="The file will be saved in the configured directory and will be ready to use."/>
+                        <Run Text="This process will generate an autoexec script based on the data registered in the system. The file will be saved in the configured directory and will be ready to use."/>
                     </TextBlock>
                 </StackPanel>
             </Border>
 
             <!-- Progress Area -->
-            <Border Background="White" 
-                    BorderBrush="#E0E0E0" 
+            <Border Background="White"
+                    BorderBrush="#E0E0E0"
                     BorderThickness="1"
                     CornerRadius="8"
-                    Padding="30"
+                    Padding="30,10,30,10"
                     Margin="0,0,0,30">
                 <StackPanel>
-                    
                     <!-- Status -->
                     <TextBlock x:Name="StatusTextBlock" 
                                Text="{Binding StatusText}" 
@@ -137,9 +133,9 @@ d:DesignHeight="550" d:DesignWidth="560">
                                  Margin="0,0,0,10"/>
 
                     <!-- Percentage -->
-                    <TextBlock x:Name="PercentageTextBlock" 
-                               Text="{Binding PercentageText}" 
-                               FontSize="13" 
+                    <TextBlock x:Name="PercentageTextBlock"
+                               Text="{Binding PercentageText}"
+                               FontSize="13"
                                Foreground="#999999"
                                HorizontalAlignment="Center"/>
                 </StackPanel>

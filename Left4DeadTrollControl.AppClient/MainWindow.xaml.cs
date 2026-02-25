@@ -26,6 +26,11 @@ public partial class MainWindow : Window
         ContentArea.Content = App.GetService<TrollListPage>();
     }
 
+    private void ImportExport_Click(object sender, RoutedEventArgs e)
+    {
+        ContentArea.Content = App.GetService<ImportExportPage>();
+    }
+
     private void NavigateToProgress(object sender, RoutedEventArgs e)
     {
         ContentArea.Content = App.GetService<ScriptGenerationPage>();
@@ -53,4 +58,6 @@ public partial class MainWindow : Window
         
         ContentArea.Content = registrationPage;
     }
+
+    
 }

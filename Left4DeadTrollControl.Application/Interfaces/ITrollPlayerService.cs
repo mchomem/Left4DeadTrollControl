@@ -3,6 +3,7 @@
 public interface ITrollPlayerService
 {
     public Task<TrollPlayerDto> CreateAsync(TrollPlayerInsertDto entity);
+    public Task<IEnumerable<TrollPlayerDto>> CreateRangeAsync(IEnumerable<TrollPlayerInsertDto> entities);
     public Task<TrollPlayerDto> DeleteAsync(Guid id);
     public Task<TrollPlayerDto> GetAsync(Guid id);
     public Task<IEnumerable<TrollPlayerDto>> GetAllAsync(TrollPlayerFilter filter);

@@ -173,7 +173,7 @@ d:DesignHeight="550" d:DesignWidth="560">
         <!-- Header -->
         <Border Grid.Row="0" Background="#007ACC" Padding="20,15">
             <TextBlock Text="Troll List" 
-                       Foreground="White" 
+                       Foreground="White"
                        FontSize="24" 
                        FontWeight="SemiBold"/>
         </Border>
