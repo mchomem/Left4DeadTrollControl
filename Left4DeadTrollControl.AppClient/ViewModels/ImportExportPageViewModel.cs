@@ -100,53 +100,48 @@ public class ImportExportPageViewModel : INotifyPropertyChanged
                 StatusText = steps[1];
                 await UpdateProgress(20, 40);
 
-                using (var sr = new StreamReader(filePath))
-                {
-                    var contentFile = await sr.ReadToEndAsync();
+                // Read all lines at once
+                string[] allLines = await File.ReadAllLinesAsync(filePath);
 
-                    if (string.IsNullOrEmpty(contentFile))
-                    {
-                        MessageBox.Show("The csv file is empty.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        return;
-                    }
+                if (allLines.Length == 0)
+                {
+                    MessageBox.Show("The csv file is empty.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
 
-                using (var sr = new StreamReader(filePath))
+                // Step 3: Reading content file
+                StatusText = steps[2];
+                await UpdateProgress(40, 60);
+
+                for (int i = 0; i < allLines.Length; i++)
                 {
-                    string lines;
-                    var lineCounter = 0;
+                    string line = allLines[i];
 
-                    // Step 3: Reading content file
-                    StatusText = steps[2];
-                    await UpdateProgress(40, 60);
+                    // Skip empty lines
+                    if (string.IsNullOrWhiteSpace(line))
+                        continue;
 
-                    while ((lines = await sr.ReadLineAsync() ?? string.Empty) != null)
+                    // Skip header (first non-empty line)
+                    if (i == 0)
+                        continue;
+
+                    var columns = line.Split(',');
+
+                    // Check format and validate csv file content
+                    if (columns.Length != 4)
                     {
-                        // If it is header, jump!
-                        if (lineCounter == 0)
-                        {
-                            lineCounter++;
-                            continue;
-                        }
-
-                        lineCounter++;
-
-                        var columns = lines.Split(',');
-
-                        // Check format and validate csv file content
-                        if (columns.Length != 4)
-                        {
-                            throw new ApplicationException($"The csv file format is invalid. The erro is in the line {lineCounter}. Each line must contain exactly 4 columns: SteamId, ProfileUrl, Nickname, Notes.");
-                        }
-
-                        var trollPlayer = new TrollPlayerInsertDto();
-                        trollPlayer.SteamId = columns[0];
-                        trollPlayer.ProfileUrl = columns[1];
-                        trollPlayer.Nickname = columns[2];
-                        trollPlayer.Notes = columns[3];
-
-                        trollPlayers.Add(trollPlayer);
+                        throw new ApplicationException($"The csv file format is invalid. The error is in line {i + 1}. Each line must contain exactly 4 columns: SteamId, ProfileUrl, Nickname, Notes.");
                     }
+
+                    var trollPlayer = new TrollPlayerInsertDto
+                    {
+                        SteamId = columns[0].Trim(),
+                        ProfileUrl = columns[1].Trim(),
+                        Nickname = columns[2].Trim(),
+                        Notes = columns[3].Trim()
+                    };
+
+                    trollPlayers.Add(trollPlayer);
                 }
 
                 // Step 4: Adding data to system
@@ -167,6 +162,7 @@ public class ImportExportPageViewModel : INotifyPropertyChanged
         finally
         {
             IsGenerating = false;
+            ProgressValue = 0;
         }
     }
 
