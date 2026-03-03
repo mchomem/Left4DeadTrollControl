@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Left4DeadTrollControl.AppClient.Pages"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
              d:DesignHeight="550" d:DesignWidth="560">
-    
+
     <UserControl.Resources>
         <Style TargetType="TextBlock" x:Key="LabelStyle">
             <Setter Property="FontSize" Value="13"/>
@@ -41,7 +42,7 @@
 
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="30,20" HorizontalAlignment="Center" MaxWidth="500">
-                
+
                 <Border Background="#007ACC" 
                         CornerRadius="10"
                         Padding="30,20"
@@ -68,7 +69,7 @@
                                    FontWeight="SemiBold"
                                    Foreground="#333333"
                                    Margin="0,0,0,15"/>
-                        
+
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -93,10 +94,15 @@
                                        Text="Framework:" 
                                        Style="{StaticResource LabelStyle}"
                                        Margin="0,0,15,0"/>
-                            <TextBlock Grid.Row="1" Grid.Column="1" 
-                                       Text=".NET 8" 
+                            <TextBlock Grid.Row="1" Grid.Column="1"                                       
                                        FontSize="13"
-                                       Foreground="#666666"/>
+                                       Foreground="#666666">
+                                <Hyperlink NavigateUri="https://dotnet.microsoft.com/en-us/download/dotnet/10.0" 
+                                           RequestNavigate="Hyperlink_RequestNavigate"
+                                           Style="{StaticResource HyperlinkStyle}">
+                                    <Run Text=".NET 10"/>
+                                </Hyperlink>
+                            </TextBlock>
                         </Grid>
                     </StackPanel>
                 </Border>
@@ -113,18 +119,26 @@
                                    FontWeight="SemiBold"
                                    Foreground="#333333"
                                    Margin="0,0,0,15"/>
-                        
+
                         <StackPanel>
                             <TextBlock Text="Misael da Costa Homem" 
                                        FontSize="15"
                                        FontWeight="Medium"
                                        Foreground="#333333"
                                        Margin="0,0,0,10"/>
-                            
+
                             <TextBlock FontSize="13" Foreground="#666666">
                                 <Hyperlink NavigateUri="https://www.linkedin.com/in/misael-da-costa-homem-8b07a158/"
                                           RequestNavigate="Hyperlink_RequestNavigate"
                                           Style="{StaticResource HyperlinkStyle}">
+                                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                        <fa:IconImage
+                                            Foreground="DarkBlue"
+                                            Icon="Linkedin" 
+                                                      Width="16" 
+                                                      Height="16" 
+                                                      Margin="0,0,5,0"/>
+                                    </StackPanel>
                                     <Run Text="LinkedIn Profile"/>
                                 </Hyperlink>
                             </TextBlock>

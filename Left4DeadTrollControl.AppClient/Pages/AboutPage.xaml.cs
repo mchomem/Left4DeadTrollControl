@@ -1,6 +1,4 @@
-using System.Diagnostics;
-
-namespace Left4DeadTrollControl.AppClient.Pages;
+﻿namespace Left4DeadTrollControl.AppClient.Pages;
 
 public partial class AboutPage : UserControl
 {

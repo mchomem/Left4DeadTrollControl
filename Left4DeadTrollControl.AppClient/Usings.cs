@@ -11,6 +11,7 @@ global using Microsoft.Extensions.DependencyInjection;
 global using Microsoft.Win32;
 global using System.Collections.ObjectModel;
 global using System.ComponentModel;
+global using System.Diagnostics;
 global using System.Globalization;
 global using System.IO;
 global using System.Runtime.CompilerServices;
