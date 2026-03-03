@@ -121,7 +121,7 @@
                                    FontSize="16" 
                                    FontWeight="Bold"
                                    TextAlignment="Center"/>
-                        <TextBlock Text="v1.0" 
+                        <TextBlock Text="v1.0.0" 
                                    Foreground="#999999" 
                                    FontSize="10" 
                                    TextAlignment="Center"
